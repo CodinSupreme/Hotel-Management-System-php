@@ -1,0 +1,247 @@
+<html lang="en"><head>
+    <style>
+        
+        body{
+            background-image:url( https://images.unsplash.com/photo-1517840901100-8179e982acb7?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWx8ZW58MHx8MHx8fDA%3D) ;
+            background-attachment: fixed;
+            background-position: center;
+            overflow: hidden;
+            
+
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+         }
+        .sign-up{
+            height: 600px;
+            width: 350px;
+            border: 3.2px solid rgb(247, 245, 245);
+            justify-content: center;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);  
+            margin-top: 0%;
+            position: fixed;
+            border-radius: 10px;
+            transition: border-color 0.5s ease; /* Smooth transition for border color change */
+            animation: colorCycle 3s infinite; /* Animation to cycle border colors */
+            position: fixed;
+
+            backdrop-filter: blur(11px);
+        }
+        /* Keyframes for the color cycle animation */
+@keyframes colorCycle {
+    0% {
+        border-color: #fc18e5; /* White */
+    }
+    25% {
+        border-color: #f14527; /* Tomato */
+    }
+    50% {
+        border-color:orangered; /* SteelBlue */
+    }
+    75% {
+        border-color: #32CD32; /* LimeGreen */
+    }
+    100% {
+        border-color: #FFD700; /* Gold */
+    }
+ }
+        .sign-up h1{
+            text-align: center;
+            color:white;
+        }
+        input::placeholder{
+            font-size: 1.18em;
+            color: rgb(105, 100, 100);
+            
+         }
+         .sign-up button{
+            font-size: 1.6em;
+            background-color: #28a745;
+            color: rgb(244, 244, 244);
+            padding: 11px;
+            height: auto;
+            border: none;
+            position: relative;
+            
+            left: 80px;
+            margin: 10px;
+            width: 40%;
+            border-radius: 10px;
+         }
+         .sign-up button:hover{
+            background-color: #218838;
+            transition: 0.5s ease;
+         }
+         input{
+            padding: 10px;
+            margin: 10px;
+            height: auto;
+            font-size: medium;
+         border: 2px solid rgb(85, 82, 82);
+            width: 85%;
+            border-radius: 5px;
+         }
+       /* Media Queries for responsiveness */
+
+/* Small Laptop Screens (Width 1024px - 1366px) */
+@media (max-width: 1366px) {
+    .sign-up {
+        width: 40vw;
+    }
+}
+
+@media (max-width: 1280px) {
+    .sign-up {
+        width: 45vw;
+    }
+}
+
+@media (max-width: 1024px) {  /* Smaller Laptops */
+    .sign-up {
+        width: 50vw; 
+    }
+
+    .sign-up h1 {
+        font-size: 1.7em;
+    }
+
+    input {
+        font-size: 1.1em;
+    }
+
+    .sign-up button {
+        font-size: 1.5em;
+        width: 50%;
+    }
+}
+       
+/* For mobile devices (width <= 480px) */
+/* Mobile Devices (Width <= 480px) */
+@media (max-width: 480px) {
+    .sign-up {
+        width: 90vw; /* Adjust width to fit mobile screens */
+        height: auto; /* Allow dynamic height */
+        padding: 20px;
+    }
+
+    .sign-up h1 {
+        font-size: 1.5em;
+    }
+
+    input {
+        font-size: 1em;
+    }
+
+    .sign-up button {
+        font-size: 1.3em;
+        width: 70%;
+    }
+}
+
+/* Tablets (max-width: 768px) */
+@media (max-width: 768px) {
+    .sign-up {
+        width: 70vw; /* Adjust width for tablets */
+        height: auto;
+        padding: 25px;
+    }
+
+    .sign-up h1 {
+        font-size: 1.8em; /* Adjust font size */
+    }
+
+    input {
+        font-size: 1.1em; /* Adjust input size */
+    }
+
+    .sign-up button {
+        font-size: 1.5em;
+        width: 60%;
+    }
+}
+        
+     
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="register" class="sign-up" id="sign-up" method="POST">
+        <input type="hidden" name="csrfmiddlewaretoken" value="swYFU16hl1FscmCs8BNuqOjT6wVLyEnl6WoBTU1rU66azK2OAX4FtkLWMFXLc129">
+        <h1><strong>Sign Up</strong></h1>
+        
+        
+        <input type="text" name="first_name" id="fname" placeholder="First Name" required=""> <br>
+        <input type="text" name="last_name" id="lname" placeholder="Last Name" required=""><br>
+        
+        <input type="email" name="email" id="email" placeholder="Email"><br>
+        <input type="number" name="id" id="idno" required="" placeholder="ID" maxlength="8"><br>
+        <input type="number" name="contact" id="contact" required="" placeholder="contact"><br>
+        
+        <input type="text" id="gender" name="gender" list="gender-options" placeholder="Enter Male, Female, or Other"><br>
+
+        <datalist id="gender-options">
+        <option value="Male">
+        </option><option value="Female">
+        </option><option value="Other">
+        </option></datalist>
+
+        
+        
+        <input type="password" id="password" name="password" maxlength="10" placeholder="password"><br>
+        <button type="submit">Sign Up</button>
+    </form>
+    <script>
+        function validateForm() {
+            const fname = document.getElementById("fname").value.trim();
+            const lname = document.getElementById("lname").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const idno = document.getElementById("idno").value.trim();
+            const contact = document.getElementById("contact").value.trim();
+            const password = document.getElementById("password").value.trim();
+            
+            // Regex Patterns
+            const textRegex = /^[A-Za-z\s]+$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phoneRegex = /^[0-9]{10}$/;
+            const idRegex = /^[0-9]{8}$/;
+        
+            // First Name & Last Name Validation
+            if (!textRegex.test(fname) || !textRegex.test(lname)) {
+                alert("First and Last Name should only contain letters.");
+                return false;
+            }
+        
+            // Email Validation
+            if (!emailRegex.test(email)) {
+                alert("Enter a valid email (example@gmail.com).");
+                return false;
+            }
+        
+            // ID Validation (Must be exactly 8 digits)
+            if (!idRegex.test(idno)) {
+                alert("ID should be exactly 8 digits.");
+                return false;
+            }
+        
+            // Contact Number Validation (Must be exactly 10 digits)
+            if (!phoneRegex.test(contact)) {
+                alert("Contact should be exactly 10 digits.");
+                return false;
+            }
+        
+            // Password Validation (Min 6 characters)
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                return false;
+            }
+        
+            return true; // Submit form if all checks pass
+        }
+        
+    </script>
+
+</body></html>
