@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haven Hub — Access</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* =============== Base =============== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: url('https://images.unsplash.com/photo-1517840901100-8179e982acb7?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWx8ZW58MHx8MHx8fDA%3D') center/cover no-repeat fixed;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    /* =============== Unified Form =============== */
+    .auth-container {
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .auth-form {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 2.5rem;
+      border: 3px solid #e3e2df;
+      animation: colorCycle 4s infinite;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      color: white;
+    }
+
+    .auth-form h2 {
+      text-align: center;
+      margin-bottom: 1.8rem;
+      font-size: 2.2rem;
+      font-weight: bold;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: white;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #2f1ab5;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin: 1.2rem 0;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #13008a;
+    }
+
+    /* =============== Toggle Links =============== */
+    .form-toggle {
+      text-align: center;
+      margin-top: 1.2rem;
+      font-size: 1.1rem;
+    }
+
+    .form-toggle a {
+      padding: 10px 25px;
+      background-color: #d4af37bd;
+      color: white;
+      text-decoration: none;
+      margin: 0 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 30px;
+    }
+
+    .form-toggle a:hover {
+      background-color: #2f1ab5;
+      transform: scale(1.05);
+    }
+
+    /* =============== Sections =============== */
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    /* =============== Animation =============== */
+    @keyframes colorCycle {
+      0% { border-color: #fc18e5; }
+      20% { border-color: #f14527; }
+      40% { border-color: orangered; }
+      60% { border-color: #32CD32; }
+      80% { border-color: #FFD700; }
+      100% { border-color: #fc18e5; }
+    }
+
+    /* =============== Responsive =============== */
+    @media (max-width: 480px) {
+      .auth-form {
+        padding: 2rem 1.5rem;
+      }
+      .auth-form h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-form">
+      <!-- LOGIN SECTION -->
+      <div id="login-section" class="form-section active">
+        <h2>Login</h2>
+        <form id="login-form" method="post" action="/login">
+          <input type="hidden" name="csrfmiddlewaretoken" value="YOUR_CSRF_TOKEN_HERE">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" name="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn">Login</button>
+        </form>
+        <div class="form-toggle">
+          <a onclick="showSection('register')">Create Account</a> •
+          <a onclick="showSection('forgot')">Forgot Password?</a>
+        </div>
+      </div>
+
+      <!-- REGISTER SECTION -->
+      <div id="register-section" class="form-section">
+        <h2>Register</h2>
+        <form id="register-form" method="post" action="/register">
+          <input type="hidden" name="csrfmiddlewaretoken" value="YOUR_CSRF_TOKEN_HERE">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" name="first_name" required>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" name="last_name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label>ID Number</label>
+            <input type="number" name="id" maxlength="8" required>
+          </div>
+          <div class="form-group">
+            <label>Contact</label>
+            <input type="number" name="contact" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" maxlength="10" required>
+          </div>
+          <button type="submit" class="btn">Sign Up</button>
+        </form>
+        <div class="form-toggle">
+          <a onclick="showSection('login')">Back to Login</a>
+        </div>
+      </div>
+
+      <!-- FORGOT PASSWORD SECTION -->
+      <div id="forgot-section" class="form-section">
+        <h2>Reset Password</h2>
+        <form id="forgot-form" method="post" action="/forgot_pass">
+          <input type="hidden" name="csrfmiddlewaretoken" value="YOUR_CSRF_TOKEN_HERE">
+          <div class="form-group">
+            <label>Verification Code or ID</label>
+            <input type="text" name="code" placeholder="Enter 4-digit code or ID" required>
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" required>
+          </div>
+          <button type="submit" class="btn">Reset Password</button>
+        </form>
+        <div class="form-toggle">
+          <a onclick="showSection('login')">Back to Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.form-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      // Show selected section
+      document.getElementById(sectionId + '-section').classList.add('active');
+    }
+  </script>
+</body>
+</html>
