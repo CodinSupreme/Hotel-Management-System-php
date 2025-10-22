@@ -12,7 +12,6 @@
       padding: 0;
       box-sizing: border-box;
     }
-   
 
     body {
       background: url('https://images.unsplash.com/photo-1517840901100-8179e982acb7?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWx8ZW58MHx8MHx8fDA%3D') center/cover no-repeat fixed;
@@ -36,12 +35,12 @@
       backdrop-filter: blur(12px);
       border-radius: 16px;
       padding: 2.5rem;
-      
       border: 3px solid #e3e2df;
       animation: colorCycle 4s infinite;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       color: white;
     }
+
 
     .auth-form h2 {
       text-align: center;
@@ -138,17 +137,66 @@
       100% { border-color: #fc18e5; }
     }
 
-    /* =============== Responsive =============== */
+    /* =============== Responsive Enhancements =============== */
+
+    /* Small devices (phones) */
     @media (max-width: 480px) {
-      .auth-form {
-        padding: 2rem 1.5rem;
+      .auth-container {
+        width: 95%;
       }
+      #login-form{
+        width: 300px;
+        height: 600px;
+      }
+
+      .auth-form {
+        padding: 2rem 1.2rem;
+      }
+
       .auth-form h2 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+      }
+
+      .form-group label,
+      .form-group input {
+        font-size: 1rem;
+      }
+
+      .btn {
+        font-size: 1rem;
+        padding: 10px;
+      }
+     
+
+      .form-toggle a {
+        display: block;
+        margin: 10px auto;
+        font-size: 1rem;
       }
     }
-    .form-toggle a{
-      display: block;
+
+    /* Medium devices (tablets) */
+    @media (min-width: 481px) and (max-width: 900px) {
+      .auth-container {
+        width: 85%;
+      }
+
+      .auth-form {
+        padding: 2rem;
+      }
+
+      .auth-form h2 {
+        font-size: 2rem;
+      }
+
+      .btn {
+        font-size: 1.1rem;
+        padding: 11px;
+      }
+
+      .form-toggle a {
+        font-size: 1.05rem;
+      }
     }
   </style>
 </head>
@@ -238,6 +286,7 @@
     </div>
   </div>
 
+  <!-- JavaScript -->
   <script>
     function showSection(sectionId) {
       // Hide all sections
