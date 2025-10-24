@@ -79,6 +79,25 @@
       border-color: white;
     }
 
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .form-group select::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .form-group select:focus {
+      outline: none;
+      border-color: white;
+    }
+
     .btn {
       width: 100%;
       padding: 12px;
@@ -158,8 +177,10 @@
       <!-- LOGIN SECTION -->
       <div id="login-section" class="form-section active">
         <h2>Login</h2>
-        <form id="login-form" method="post" action="/login">
+        <?php if (!empty($loginmessage)) echo $loginmessage; ?>
+        <form id="login-form" method="post" action="">
           <input type="hidden" name="csrfmiddlewaretoken" value="YOUR_CSRF_TOKEN_HERE">
+          <input type="hidden" name="Type" value="login">
           <div class="form-group">
             <label for="login-email">Email</label>
             <input type="email" id="login-email" name="email" placeholder="you@example.com" required>
@@ -179,7 +200,9 @@
       <!-- REGISTER SECTION -->
       <div id="register-section" class="form-section">
         <h2>Register</h2>
-        <form id="register-form" method="post" action="/register">
+        <?php if (!empty($registermessage)) echo $registermessage; ?>
+        <form id="register-form" method="post" action="">
+          <input type="hidden" name="Type" value="register">
           <input type="hidden" name="csrfmiddlewaretoken" value="YOUR_CSRF_TOKEN_HERE">
           <div class="form-group">
             <label>First Name</label>
@@ -195,11 +218,19 @@
           </div>
           <div class="form-group">
             <label>ID Number</label>
-            <input type="number" name="id" maxlength="8" required>
+            <input type="number" name="id_no" maxlength="8" required>
           </div>
           <div class="form-group">
             <label>Contact</label>
             <input type="number" name="contact" required>
+          </div>
+          <div class="form-group">
+            <label>Contact</label>
+            <select name="gender" required>
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
           </div>
           <div class="form-group">
             <label>Password</label>
@@ -215,7 +246,9 @@
       <!-- FORGOT PASSWORD SECTION -->
       <div id="forgot-section" class="form-section">
         <h2>Reset Password</h2>
-        <form id="forgot-form" method="post" action="/forgot_pass">
+        <?php if (!empty($forgotmessage)) echo $forgotmessage; ?>
+        <form id="forgot-form" method="post" action="">
+          <input type="hidden" name="Type" value="forgot">
           <input type="hidden" name="csrfmiddlewaretoken" value="YOUR_CSRF_TOKEN_HERE">
           <div class="form-group">
             <label>Verification Code or ID</label>
