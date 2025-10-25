@@ -467,3 +467,99 @@ hr {
   display: inline-block;
   margin: 0.5rem;
 }
+/*for responsiveness
+/* ===================== RESPONSIVE DESIGN ===================== */
+
+/* Tablet (≤1024px) */
+@media (max-width: 1024px) {
+  .nav-links a {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+  .hero p {
+    font-size: 1.1rem;
+  }
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+
+  .menu-toggle {
+    display: block;
+    font-size: 1.8rem;
+    color: var(--primary);
+    cursor: pointer;
+    z-index: 2001;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    transition: right 0.4s ease;
+    box-shadow: -3px 0 20px rgba(0,0,0,0.1);
+    z-index: 2000;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+
+  .nav-links a {
+    font-size: 1.3rem;
+    color: var(--primary);
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-container {
+    grid-template-columns: 1fr;
+  }
+
+  footer .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-section ul li {
+    margin: 0.4rem 0;
+  }
+}
+
+/* Smaller phones (≤480px) */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  .btn {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+}
