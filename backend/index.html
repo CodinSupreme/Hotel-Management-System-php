@@ -11,23 +11,28 @@
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
     <div class="logo">
-      <a href="home.html">
+      <a href="index.php">
         <img src="images/logo.png" alt="Haven Hub Hotels">
       </a>
     </div>
 
-    <!-- Hamburger Menu -->
     <div class="menu-toggle" id="menu-toggle">
       <i class="fa-solid fa-bars"></i>
     </div>
 
     <ul class="nav-links" id="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="accomodation.php">Accomodation</a></li>
-      <li><a href="dining.html">Dining</a></li>
-      <li><a href="about.html">About us</a></li>
+      <li><a href="index.php">Home</a></li>
+      <li><a href="accomodation.php">Accommodation</a></li>
+      <li><a href="dining.php">Dining</a></li>
+      <li><a href="about.php">About us</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a href="forms.php" class="btn btn-primary">Book Now</a></li>
+      <li>
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <a href="dashboard.php" class="btn btn-secondary">My Account</a>
+        <?php else: ?>
+          <a href="login.php" class="btn btn-primary">Book Now</a>
+        <?php endif; ?>
+      </li>
     </ul>
   </nav>
 
@@ -37,42 +42,64 @@
     <div class="hero-content">
       <h1>Experience Luxury at Its Finest</h1>
       <p>Where comfort meets elegance in the heart of the city</p>
-      <a href="login.html" class="btn btn-primary">Book Your Stay</a>
+      <a href="accomodation.php" class="btn btn-primary">Book Your Stay</a>
     </div>
   </header>
 
-  <!-- Accommodations -->
+  <!-- Rooms from Database -->
   <section id="rooms" class="section">
     <div class="container">
       <h2>Our Accommodations</h2>
       <div class="card-grid">
-        <div class="card">
-          <div class="card-image" style="background-image:url('images/room1.jpg')"></div>
-          <div class="card-content">
-            <h3>Deluxe Suite</h3>
-            <p>Spacious room with city view</p>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-image" style="background-image:url('images/room2.jpg')"></div>
-          <div class="card-content">
-            <h3>Executive Room</h3>
-            <p>Premium comfort with lounge access</p>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-image" style="background-image:url('images/hotel.jpg')"></div>
-          <div class="card-content">
-            <h3>Presidential Suite</h3>
-            <p>Ultimate luxury experience</p>
-          </div>
-        </div>
+        <?php
+        // Get rooms from database
+        $rooms = getAllRooms();
+        
+        // Display each room
+        foreach ($rooms as $room) {
+            echo '
+            <div class="card">
+              <div class="card-image" style="background-image:url(\'images/room1.jpg\')"></div>
+              <div class="card-content">
+                <h3>' . $room['room_type'] . '</h3>
+                <p>' . $room['bed_type'] . ' Bed</p>
+                <p class="price">$' . $room['price_per_night'] . '/night</p>
+                <a href="book.php?room_id=' . $room['room_id'] . '" class="btn btn-primary">Book Now</a>
+              </div>
+            </div>';
+        }
+        ?>
       </div>
     </div>
   </section>
 
-  <!-- Amenities -->
-  <section id="amenities" class="section bg-light">
+  <!-- Services from Database -->
+  <section id="services" class="section bg-light">
+    <div class="container">
+      <h2>Our Services</h2>
+      <div class="card-grid">
+        <?php
+        // Get services from database
+        $services = getAllServices();
+        
+        // Display each service
+        foreach ($services as $service) {
+            echo '
+            <div class="card">
+              <div class="card-content">
+                <h3>' . $service['service_name'] . '</h3>
+                <p>' . $service['service_description'] . '</p>
+                <p class="price">$' . $service['service_price'] . '</p>
+              </div>
+            </div>';
+        }
+        ?>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rest of your existing HTML -->
+  <section id="amenities" class="section">
     <div class="container">
       <h2>Hotel Amenities</h2>
       <div class="card-grid">
@@ -86,31 +113,6 @@
     </div>
   </section>
 
-  <!-- Dining -->
-  <section id="dining" class="section">
-    <div class="container">
-      <h2>Exquisite Dining Experience</h2>
-      <div class="card-grid">
-        <div class="card"><div class="card-image" style="background-image:url('images/food1.jpg')"></div><div class="card-content"><h3>Buffet & Breakfast</h3><p>Savour a diverse selection of international dishes</p></div></div>
-        <div class="card"><div class="card-image" style="background-image:url('images/food3.jpg')"></div><div class="card-content"><h3>Fine Dining Restaurant</h3><p>Indulge in gourmet cuisine prepared by world-class chefs</p></div></div>
-        <div class="card"><div class="card-image" style="background-image:url('images/food2.jpg')"></div><div class="card-content"><h3>Grill & Steakhouse</h3><p>Enjoy perfectly grilled steaks</p></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Lifestyle -->
-  <section id="lifestyle" class="section bg-light">
-    <div class="container">
-      <h2>Experience Unmatched Comfort and Luxury</h2>
-      <div class="card-grid">
-        <div class="card"><div class="card-image" style="background-image:url('images/lifestyle5.jpg')"></div><div class="card-content"><h3>Chill and Unwind</h3><p>Relax, refresh and rejuvenate</p></div></div>
-        <div class="card"><div class="card-image" style="background-image:url('images/lifestyle7.jpg')"></div><div class="card-content"><h3>Refresh and Unwind</h3><p>Relax in our crystal-clear pool</p></div></div>
-        <div class="card"><div class="card-image" style="background-image:url('images/lifestyle3.jpg')"></div><div class="card-content"><h3>Pure Tranquility</h3><p>Breathe, unwind and embrace serenity</p></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
   <section id="contact" class="section">
     <div class="container">
       <h2>Contact Us</h2>
@@ -121,26 +123,25 @@
           <p><i class="fa-solid fa-phone"></i> +254 765 325 412</p>
           <p><i class="fa-solid fa-envelope"></i> info@havenhub.com</p>
         </div>
-        <form class="contact-form">
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
-          <textarea placeholder="Your Message" required></textarea>
+        <form class="contact-form" action="contact.php" method="POST">
+          <input type="text" name="name" placeholder="Your Name" required />
+          <input type="email" name="email" placeholder="Your Email" required />
+          <textarea name="message" placeholder="Your Message" required></textarea>
           <button type="submit" class="btn btn-primary">Send Message</button>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="accomodation.html">Rooms & Suites</a></li>
-            <li><a href="dining.html">Dining</a></li>
-            <li><a href="about.html">Amenities</a></li>
+            <li><a href="accomodation.php">Rooms & Suites</a></li>
+            <li><a href="dining.php">Dining</a></li>
+            <li><a href="about.php">Amenities</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>

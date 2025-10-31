@@ -57,7 +57,7 @@
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
     <div class="logo">
-      <a href="index.php">
+      <a href="home.html">
         <img src="images/logo.png" alt="Haven Hub Hotels">
       </a>
     </div>
@@ -68,14 +68,13 @@
     </button>
 
     <ul class="nav-links" id="nav-links">
-      <li><a href="index.php">Home</a></li>
+      <li><a href="home.html">Home</a></li>
       <li><a href="#" class="active">Accommodations</a></li>
       <li><a href="dining.html">Dining</a></li>
       <li><a href="about.html">About Us</a></li>
-      <li><a href="index.php#contact">Contact</a></li>
-      <?php
-      // Check if user is logged in
-      if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+      <li><a href="home.html#contact">Contact</a></li>
+      <?php if (isset($_SESSION['user'])): ?>
+        <li><span style="color: var(--primary); padding: 8px 16px; font-weight: bold;">Welcome, <?= htmlspecialchars($_SESSION['user']) ?></span></li>
         <li><a href="accomodation.php?logout=true" class="btn btn-primary">Logout</a></li>
       <?php else: ?>
         <li><a href="forms.php" class="btn btn-primary">Login</a></li>
@@ -443,11 +442,7 @@
           <button type="button" class="payment-method" onclick="choosePaymentMethod('Bank Transfer')">Bank Transfer</button>
         </div>
         <div id="book-button" style="display:none; margin-top: 1rem;">
-          <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
           <button type="submit" class="btn-primary">Confirm Booking</button>
-          <?php else: ?>
-
-          <?php endif; ?>
         </div>
       </form>
     </div>
@@ -480,37 +475,50 @@
     });
 
     /* Updated Booking popup logic */
-    let selectedPrice, selectedid, type, selectedservice, totalprice, total_days, paymentmethod;
-    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
-    function bookRoom(id_no, price) {
-      selectedPrice = price;
-      console.log( id_no, price)
-      selectedid = id_no;
-      type = "room";
-      selectedservice = 4017;
+    let selectedPrice, selectedRoomId;
+
+    function bookRoom(roomId, price) {
+      selectedPrice = parseFloat(price);
+      selectedRoomId = roomId;
+      
+      document.getElementById('room_id').value = roomId;
       document.getElementById('payment-popup').style.display = 'flex';
+      document.getElementById('payment-popup').setAttribute('aria-hidden','false');
+      
+      // Reset form
+      document.getElementById('days').value = '';
+      document.getElementById('payment-summary').innerHTML = '';
+      document.getElementById('payment-methods').style.display = 'none';
+      document.getElementById('book-button').style.display = 'none';
     }
 
-
     function calculatePayment() {
-      const days = document.getElementById('days').value;
+      const days = parseInt(document.getElementById('days').value, 10);
       if (days && days > 0) {
-        total_days = days;
         totalprice = selectedPrice * days;
-        
-        document.getElementById('payment-summary').innerHTML = `Total: $${totalprice.toFixed(2)}`;
+        document.getElementById('payment-summary').innerHTML = `
+          <div class="price-breakdown">
+            <p>Price per night: $${selectedPrice.toFixed(2)}</p>
+            <p>Number of days: ${days}</p>
+            <p><strong>Total: $${totalprice.toFixed(2)}</strong></p>
+          </div>
+        `;
+        document.getElementById('total_price').value = totalprice.toFixed(2);
         document.getElementById('payment-methods').style.display = 'flex';
       } else {
         alert('Please enter a valid number of days.');
       }
     }
 
-   function choosePaymentMethod(method) {
-      alert(`Payment via ${method} successful!`);
-      document.getElementById('payment-popup').style.display = 'none';
-      paymentmethod = method;
-      sendData();
-      window.location.reload();
+    function choosePaymentMethod(method) {
+      document.getElementById('payment_method').value = method;
+      document.getElementById('book-button').style.display = 'block';
+      
+      // Highlight selected payment method
+      document.querySelectorAll('.payment-method').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
     }
 
     // Close popup when clicking outside
@@ -520,38 +528,6 @@
         this.setAttribute('aria-hidden', 'true');
       }
     });
-
-    function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                let cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    let cookie = cookies[i].trim();
-                    if (cookie.startsWith(name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-    function sendData() {
-            let myData = { 'id' : selectedid, 'type':type, 'price' : totalprice, 'payment' : paymentmethod, 'service' : selectedservice, 'days' : total_days};
-            fetch('accomodation.php', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": getCookie("csrftoken")  // ✅ Include CSRF token
-                },
-                body: JSON.stringify(myData)
-            }).catch(error => console.error("Error:", error));  // Ignore response
-        }
-    <?php else: ?>
-    function bookRoom(client_id, id_no, price, service) {
-      window.location.href = "forms.php";
-    }
-    <?php endif; ?>
   </script>
 </body>
 </html>
