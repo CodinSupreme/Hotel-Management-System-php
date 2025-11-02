@@ -12,17 +12,17 @@
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
     <div class="logo">
-      <a href="home.html">
+      <a href="home.php">
         <img src="images/logo.png" alt="Haven Hub Hotels">
       </a>
     </div>
     <ul class="nav-links">
-      <li><a href="home.html">Home</a></li>
-      <li><a href="accommodations.html">Accommodations</a></li>
+      <li><a href="home.php">Home</a></li>
+      <li><a href="accommodations.php">Accommodations</a></li>
       <li><a href="#">Dining</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="home.html#contact">Contact</a></li>
-      <li><a href="login.html" class="btn btn-primary">Book Now</a></li>
+      <li><a href="about.php">About Us</a></li>
+      <li><a href="home.php#contact">Contact</a></li>
+      <li><a href="forms.php" class="btn btn-primary">Book Now</a></li>
     </ul>
   </nav>
 
@@ -464,7 +464,8 @@
   <script>
     let selectedPrice, selectedid, type, selectedservice, totalprice, total_days, paymentmethod;
 
-    function orderFood(id_no, price, service) {
+    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+     function orderFood(id_no, price, service) {
       selectedPrice = price;
       selectedid = id_no;
       type = "food";
@@ -477,19 +478,61 @@
       if (days && days > 0) {
         total_days = days;
         totalprice = selectedPrice * days;
+        
         document.getElementById('payment-summary').innerHTML = `Total: $${totalprice.toFixed(2)}`;
         document.getElementById('payment-methods').style.display = 'flex';
       } else {
-        alert('Please enter a valid quantity.');
+        alert('Please enter a valid number of days.');
       }
     }
 
-    function choosePaymentMethod(method) {
+   function choosePaymentMethod(method) {
       alert(`Payment via ${method} successful!`);
       document.getElementById('payment-popup').style.display = 'none';
       paymentmethod = method;
+      sendData();
       window.location.reload();
     }
+
+    // Close popup when clicking outside
+    document.getElementById('payment-popup').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+        this.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                let cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    function sendData() {
+            let myData = { 'id' : selectedid, 'type':type, 'price' : totalprice, 'payment' : paymentmethod, 'service' : selectedservice, 'days' : total_days};
+            fetch('accomodation.php', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")  // ✅ Include CSRF token
+                },
+                body: JSON.stringify(myData)
+            }).catch(error => console.error("Error:", error));  // Ignore response
+        }
+    <?php else: ?>
+    function orderFood(id_no, price, service) {
+      window.location.href = "forms.php";
+    }
+    <?php endif; ?>
   </script>
 </body>
 </html>

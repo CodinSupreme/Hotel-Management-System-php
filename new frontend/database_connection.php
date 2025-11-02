@@ -17,10 +17,10 @@ try {
 
 $host = 'localhost';
 $port = 5432; // default PostgreSQL port
-$dbname = 'Hotel_management';
+$dbname = 'hotel_management_php';
 $user = 'postgres';
-$password = '@miguidenis.4';
-
+$password = 'C0d1n.Dat@Base';
+//
 
 try {
     // Change mysql: to pgsql:

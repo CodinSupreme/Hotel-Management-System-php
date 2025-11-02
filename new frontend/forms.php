@@ -37,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $msg = createUser($email, $password, $first_name, $last_name, $contact, $gender, $id_no);
         if ($msg === true) {
             $registermessage = "<p style='color: lime; text-align:center; font-weight:bold; margin-bottom:15px;'>✅ Registration successful! Welcome back, $email.</p>";
-            header("Location: index.php");
+            header("Location: forms.php");
         } else {
             $registermessage = "<p style='color: red; text-align:center; font-weight:bold; margin-bottom:15px;'>❌ Credentials already exist. $msg</p>";
         }
