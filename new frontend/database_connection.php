@@ -19,7 +19,7 @@ $host = 'localhost';
 $port = 5432; // default PostgreSQL port
 $dbname = 'hotel_management_php';
 $user = 'postgres';
-$password = 'C0d1n.Dat@Base';
+$password = '';
 //
 
 try {
