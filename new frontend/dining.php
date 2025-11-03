@@ -3,47 +3,52 @@
 session_start();
 include "database.php";// ✅ your existing connection file
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Decode incoming JSON
     $input = json_decode(file_get_contents("php://input"), true);
 
+    // Validate JSON
     if (!$input) {
         http_response_code(400);
-        echo json_encode(["error" => "Invalid JSON data"]);
+        echo json_encode(["error" => "Invalid or empty JSON data"]);
         exit;
     }
 
     // Extract the data from JSON
-    $room_id = $input['id'] ?? null;
-    $service = $input['service'] ?? null;
-    $payment_method = $input['payment'] ?? null;
-    $total_price = $input['price'] ?? null;
-    $days = $input['days'] ?? 1;
-    $user_id = $_SESSION['user_id'] ?? null;
-
-    // You can calculate check-in and check-out dates here
-    $check_in = date('Y-m-d');
-    $check_out = date('Y-m-d', strtotime("+$days days"));
-
-    // Example: guests default to 1, status to "Pending"
-    $guests = 1;
-    $status = "Pending";
+    $service_id       = $input['id'] ?? null;
+    $service_type     = $input['type'] ?? null;          
+    $price            = $input['price'] ?? null;
+    $payment_method   = $input['payment'] ?? null;
+    $selected_service = $input['service'] ?? null;        
+    $quantity         = $input['quantity'] ?? 1;          
+    $user_id          = $_SESSION['user_id'] ?? null;
 
     // Validate required data
-    if (!$user_id || !$room_id || !$total_price || !$payment_method) {
+    if (!$service_type || !$price || !$selected_service) {
         http_response_code(400);
         echo json_encode(["error" => "Missing required fields"]);
         exit;
     }
 
-    // Call your function
-    $msg = createBooking($user_id, $room_id, $check_in, $check_out, $guests, $total_price, $status);
+    // Construct the service data
+    $service_name = ucfirst($service_type) . " Service"; 
+    $description  = "Service ID: $selected_service | Type: $service_type | Quantity: $quantity";
 
-    // Return JSON response
-    if ($msg === true) {
-        echo json_encode(["success" => "✅ Room booked successfully!"]);
+    // Call the database function
+    $success = createService($service_name, $description, $price);
+
+    // Respond with JSON
+    if ($success) {
+        echo json_encode(["success" => "✅ Service recorded successfully!"]);
     } else {
-        echo json_encode(["error" => "❌ Booking failed: $msg"]);
+        http_response_code(500);
+        echo json_encode(["error" => "❌ Failed to record service."]);
     }
+
+} else {
+    // Reject non-POST requests
+    http_response_code(405);
+    echo json_encode(["error" => "Only POST requests are allowed"]);
 }
 
 // ✅ Handle logout request
